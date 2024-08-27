@@ -102,7 +102,7 @@ def text_to_speech_eageTTS(text):
 
 
 def answer_the_question_deepseek(user_question):
-    API_KEY = 'sk-efef2be62a99432b8f3fa5272df98a0b'
+    API_KEY = 'sk-xxx'
     client = llm_api(api_key=API_KEY,
             base_url="https://api.deepseek.com",
             model="deepseek-chat")
