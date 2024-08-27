@@ -20,19 +20,21 @@ A locally executed AI voice phone interaction project
 ## 安装指南
 电脑上的主程序
 1. 克隆本仓库到你的本地计算机：
-git clone https://github.com/DFRobot-AIGC/calling2Socrates.git
-2. 创建虚拟环境（可选）
+   
+  ```git clone https://github.com/DFRobot-AIGC/calling2Socrates.git```
+
+3. 创建虚拟环境（可选）
 建议使用conda虚拟环境来隔离项目的依赖库。你可以使用以下命令创建和激活虚拟环境：
 ### 创建虚拟环境
-conda create -n socrates python=3.12
+```conda create -n socrates python=3.12```
 
 ### 激活虚拟环境
-conda activate socrates
+```conda activate socrates```
 
 3. 进入项目目录并安装依赖：
-pip install -r requirements.txt
+```pip install -r requirements.txt```
 4. 运行主程序 chat.py：
-python chat.py
+```python chat.py```
 
 ## 行空板上的程序
 1. 将 main.py 上传到行空板并运行。
