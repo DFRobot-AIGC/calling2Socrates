@@ -8,6 +8,8 @@ A locally executed AI voice phone interaction project
 ## 环境要求
 在开始使用本项目之前，请确保你的环境符合以下要求：
 - 请根据 requirements.txt 文件安装所需的Python依赖库。
+- 支持Python 3.8+。
+- 推荐使用 `uv` 管理虚拟环境和依赖。
 
 ## 硬件清单
 - LattePanda（可以用你的电脑代替）
@@ -23,18 +25,39 @@ A locally executed AI voice phone interaction project
    
   ```git clone https://github.com/DFRobot-AIGC/calling2Socrates.git```
 
-3. 创建虚拟环境（可选）
-建议使用conda虚拟环境来隔离项目的依赖库。你可以使用以下命令创建和激活虚拟环境：
-### 创建虚拟环境
-```conda create -n socrates python=3.12```
+2. 使用 `uv` 自动部署电脑端主程序：
+```bash
+bash scripts/deploy_uv.sh
+```
 
-### 激活虚拟环境
-```conda activate socrates```
+这个脚本会自动完成以下操作：
+- 创建 `.venv` 虚拟环境
+- 使用 `uv` 安装 `requirements.txt` 中的依赖
+- 如果 `.env` 不存在，则从 `.env.example` 自动生成
+- 如果本机已安装 `ollama`，自动拉取 `.env` 中配置的模型，默认是 `qwen3.5:2b`
 
-3. 进入项目目录并安装依赖：
-```pip install -r requirements.txt```
-4. 运行主程序 chat.py：
-```python chat.py```
+3. 配置环境变量（可选）：
+将 `.env.example` 文件复制为 `.env` 并根据需要修改其中的配置项：
+```
+cp .env.example .env
+```
+然后编辑 `.env` 文件，设置你的API密钥和其他配置项。
+
+4. 激活虚拟环境并运行主程序 chat.py：
+```bash
+source .venv/bin/activate
+python chat.py
+```
+
+### 手动使用 uv（可选）
+如果你不想使用自动部署脚本，也可以手动执行：
+```bash
+uv venv .venv --python 3.12
+uv pip install --python .venv/bin/python -r requirements.txt
+cp .env.example .env
+source .venv/bin/activate
+python chat.py
+```
 
 ## 行空板上的程序
 1. 将 main.py 上传到行空板并运行。
@@ -60,6 +83,55 @@ A locally executed AI voice phone interaction project
 ## 许可证
 本项目使用 [CC0 1.0 Universal](LICENSE) 许可证，这意味着你可以自由使用、修改和分发本项目，无需获得原作者的许可。
 
+## 代码结构说明
+
+### 配置管理系统
+项目新增了集中式配置管理系统，主要包括：
+
+- **环境变量配置**：通过 `.env` 文件管理敏感信息和可变配置
+- **config.py**：集中管理所有配置项，包括：
+  - MQTT连接参数
+  - API密钥
+  - 音频设置
+  - 文件路径
+  - AI模型参数
+
+使用配置系统的好处：
+- 便于维护和修改配置
+- 提高代码安全性，避免硬编码敏感信息
+- 支持不同环境下的灵活配置
+
+### 代码优化
+
+#### 模块化设计
+- 将功能分离为独立模块，提高代码可维护性
+- 使用函数封装重复逻辑，减少代码冗余
+
+#### 错误处理机制
+- 增强了异常捕获和处理
+- 添加了详细的日志记录，便于调试和问题追踪
+
+#### 安全性提升
+- API密钥通过环境变量管理，避免硬编码
+- 增加了输入验证和安全检查
+
+### 日志系统
+项目集成了Python标准日志库，提供以下功能：
+- 不同级别的日志记录（INFO, WARNING, ERROR）
+- 时间戳和模块信息
+- 便于调试和问题追踪的详细输出
+
+使用示例：
+```python
+import logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+logger.info("操作成功")
+logger.error("发生错误")
+```
+
 ## 参考
 - LattePanda 官网: https://www.lattepanda.com/
 - 行空板 官网: https://www.unihiker.com.cn/
+- Python dotenv: https://github.com/theskumar/python-dotenv
+- Edge TTS: https://github.com/rany2/edge-tts
